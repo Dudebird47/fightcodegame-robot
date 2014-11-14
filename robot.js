@@ -1,5 +1,6 @@
-
-function Robot(robot) {}
+function Robot(robot) {
+robot.clone();
+}
 
 // well, we need to do something...
 // whenever our robot is idle, this method gets called.
@@ -23,14 +24,21 @@ Robot.prototype.onWallCollision = function(ev) {};
 Robot.prototype.onScannedRobot = function(ev) {
     var robot;
     robot = ev.robot;
-    robot.fire(1);
+  if(robot.id == ev.scannedRobot.parentId){
+    robot.log(ev.scannedRobot.id);
+  }else if(robot.parentId == ev.scannedRobot.id){
+  }else{
+    robot.fire();
+    robot.turn(180 - ev.scannedRobot.angle);
+  	robot.ahead(200);
+  }
+
 };
 
 // ohhh... we were hit by another robot...
 Robot.prototype.onHitByBullet = function(ev) {
     var robot;
     robot = ev.robot;
-    robot.turn(90 - ev.bulletBearing);
-  	robot.clone();
+    robot.turn(90 - ev.bearing);
   	robot.disappear();
 };
